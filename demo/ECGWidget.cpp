@@ -16,7 +16,7 @@ ECGWidget::ECGWidget(QWidget *parent) : QWidget(parent) {
   connect(ui.pushButton_next, &QPushButton::clicked, this,
           &ECGWidget::Btn_OnNextClicked);
 
-  receiveMsg_ = 0;
+  stop_flag_ = 0;
 
   customPlot = new QCustomPlot(this);         // 创建 QCustomPlot 控件
   ui.horizontalLayout->addWidget(customPlot); // 将 QCustomPlot 添加到布局中
@@ -26,6 +26,15 @@ ECGWidget::ECGWidget(QWidget *parent) : QWidget(parent) {
 ECGWidget::~ECGWidget() {}
 
 void ECGWidget::Btn_OnStartClicked() {
+  stop_flag_ = 0;
+
+  // clear all
+  xData.clear();
+  yData.clear();
+  res.time.clear();
+  res.ECG.clear();
+  res.sum = 0;
+
   connect(serial_, &QSerialPort::readyRead, this, &ECGWidget::handleReadyRead);
 
   timer_.start(500); // 每隔0.5秒发送一次数据
@@ -36,10 +45,13 @@ void ECGWidget::Btn_OnStartClicked() {
   // 设置定时器，定时刷新绘图
   timer_plot_.start(100); // 每100毫秒刷新一次绘图
   connect(&timer_plot_, &QTimer::timeout, this, &ECGWidget::updatePlot);
+
+  base_time_ = QDateTime::currentDateTime().toMSecsSinceEpoch() / 1000.0;
 }
 
 void ECGWidget::Btn_OnFinishClicked() {
   timer_.stop();
+  timer_plot_.stop();
 
   ui.pushButton_start->setText("开始测量");
   QByteArray data = "S";
@@ -69,12 +81,17 @@ void ECGWidget::Btn_OnNextClicked() {
 
 void ECGWidget::Btn_OnStopClicked() {
   timer_.stop();
+  timer_plot_.stop();
+  stop_flag_ = 1;
 
   QByteArray data = "S";
   serial_->write(data);
 }
 
 void ECGWidget::handleReadyRead() {
+  if (stop_flag_) {
+    return;
+  }
   QByteArray data = serial_->readAll(); // 读取接收到的数据
   qDebug() << "Received data:" << data;
   // 停止发送数据
@@ -86,7 +103,8 @@ void ECGWidget::handleReadyRead() {
   // 将数据添加到绘图数据列表中
   double timestamp = QDateTime::currentDateTime().toMSecsSinceEpoch() /
                      1000.0; // 当前时间作为 x 轴数据（单位为秒）
-  timestamp = fmod(timestamp, 100.0);
+  timestamp -= base_time_;
+
   xData.append(timestamp); // 将时间戳添加到 x 轴数据中
   yData.append(value);     // 接收到的数据作为 y 轴数据
 

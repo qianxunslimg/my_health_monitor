@@ -30,25 +30,16 @@
     <Filter Include="BP">
       <UniqueIdentifier>{4a7022ea-a1ce-427a-9998-91cdbaaab791}</UniqueIdentifier>
     </Filter>
+    <Filter Include="main">
+      <UniqueIdentifier>{da12502f-af30-4d5e-ad61-8b1e9b194d44}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <QtRcc Include="demo.qrc">
       <Filter>Resource Files</Filter>
     </QtRcc>
-    <QtUic Include="demo.ui">
-      <Filter>Form Files</Filter>
-    </QtUic>
-    <QtMoc Include="demo.h">
-      <Filter>Header Files</Filter>
-    </QtMoc>
-    <ClCompile Include="demo.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="qcustomplot.cpp">
       <Filter>qcustomplot</Filter>
     </ClCompile>
@@ -57,6 +48,12 @@
     </ClCompile>
     <ClCompile Include="BloodPressureWidget.cpp">
       <Filter>BP</Filter>
+    </ClCompile>
+    <ClCompile Include="demo.cpp">
+      <Filter>main</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>main</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -74,6 +71,9 @@
     <QtMoc Include="BloodPressureWidget.h">
       <Filter>BP</Filter>
     </QtMoc>
+    <QtMoc Include="demo.h">
+      <Filter>main</Filter>
+    </QtMoc>
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="ECGWidget.ui">
@@ -81,6 +81,9 @@
     </QtUic>
     <QtUic Include="BloodPressureWidget.ui">
       <Filter>BP</Filter>
+    </QtUic>
+    <QtUic Include="demo.ui">
+      <Filter>main</Filter>
     </QtUic>
   </ItemGroup>
 </Project>

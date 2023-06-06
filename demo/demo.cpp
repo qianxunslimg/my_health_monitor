@@ -50,6 +50,13 @@ void demo::OnBPFinished(BloodPressureRes res) {
   ecg_widget = new ECGWidget;
   ecg_widget->setSerialPort(serial);
   ecg_widget->show();
+  connect(ecg_widget, SIGNAL(onFinished(ECGRes)), this,
+          SLOT(OnECGFinished(ECGRes)));
+}
+
+void demo::OnECGFinished(ECGRes res) {
+  delete ecg_widget;
+  ecg_res = res;
 }
 
 void demo::OnAllFinished() {

@@ -16,8 +16,9 @@ public:
 private:
   Ui::demoClass ui;
 
-  BloodPressureRes bp_res;
   EmployeeInfo e_info;
+  BloodPressureRes bp_res;
+  ECGRes ecg_res;
 
   BloodPressureWidget *blood_pressure_widget;
   ECGWidget *ecg_widget;
@@ -32,4 +33,5 @@ private slots:
   void Btn_OnStartClicked();
   void OnAllFinished();
   void OnBPFinished(BloodPressureRes);
+  void OnECGFinished(ECGRes);
 };

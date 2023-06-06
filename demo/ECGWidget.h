@@ -20,7 +20,7 @@ private:
   Ui::ECGWidgetClass ui;
 
   QSerialPort *serial_; //
-  bool receiveMsg_;
+  bool stop_flag_;
   QTimer timer_;
   QTimer timer_plot_;
   ECGRes res;
@@ -29,6 +29,8 @@ private:
 
   QVector<double> xData;
   QVector<double> yData;
+
+  double base_time_;
 private slots:
   void Btn_OnStartClicked();
   void Btn_OnNextClicked();
