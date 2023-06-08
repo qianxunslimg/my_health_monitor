@@ -23,7 +23,10 @@ ECGWidget::ECGWidget(QWidget *parent) : QWidget(parent) {
   customPlot->addGraph();
 }
 
-ECGWidget::~ECGWidget() {}
+ECGWidget::~ECGWidget() {
+  delete customPlot;
+  int a = 10;
+}
 
 void ECGWidget::Btn_OnStartClicked() {
   stop_flag_ = 0;
@@ -68,14 +71,16 @@ void ECGWidget::Btn_OnNextClicked() {
 
   auto &xData = res.time;
   auto &yData = res.ECG;
-
-  double timeLimit = 10;
-  double timeend = xData.back();
-  double timestart = timeend - timeLimit;
-  while (!xData.isEmpty() && xData.first() < timestart) {
-    xData.removeFirst();
-    yData.removeFirst();
+  if (xData.size() != 0) {
+    double timeLimit = 10;
+    double timeend = xData.back();
+    double timestart = timeend - timeLimit;
+    while (!xData.isEmpty() && xData.first() < timestart) {
+      xData.removeFirst();
+      yData.removeFirst();
+    }
   }
+
   emit(onFinished(res)); /////
 }
 
@@ -92,6 +97,27 @@ void ECGWidget::handleReadyRead() {
   if (stop_flag_) {
     return;
   }
+
+  // bool step1 = 0;
+  // if (!step1) {
+  //  QByteArray data = serial_->readAll(); // 读取接收到的
+  //  std::string aa = data.toStdString();
+  //  if (aa == "FF") {
+  //    step1 = 1;
+  //  }
+  //}
+  // if (step1 == 1) {
+  //  QByteArray data = serial_->readAll(); // 读取接收到的
+  //  std::string aa = data.toStdString();
+  //  if (aa == "FF") {
+  //    step1 = 1;
+  //  }
+  //}
+  ////检查ff,
+  // if () {
+  //}
+
+  // serial_->clear();
   QByteArray data = serial_->readAll(); // 读取接收到的数据
   qDebug() << "Received data:" << data;
   // 停止发送数据
@@ -121,8 +147,8 @@ void ECGWidget::handleReadyRead() {
 
 void ECGWidget::sendData() {
   serial_->clear();
-  QByteArray data = "P"; // 要发送的数据
-  serial_->write(data);  // 发送数据
+  QByteArray data = "Ppppppppppppppppppppp"; // 要发送的数据
+  serial_->write(data);                      // 发送数据
 }
 
 void ECGWidget::updatePlot() {

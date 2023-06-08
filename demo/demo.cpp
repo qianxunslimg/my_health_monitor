@@ -32,30 +32,31 @@ void demo::Btn_OnStartClicked() {
   this->hide();
   // start...
   // new 一个widget
-  blood_pressure_widget = new BloodPressureWidget;
-  blood_pressure_widget->setSerialPort(serial);
-  blood_pressure_widget->show();
+  // blood_pressure_widget = new BloodPressureWidget;
+  blood_pressure_widget.setSerialPort(serial);
+  blood_pressure_widget.show();
 
-  connect(blood_pressure_widget, SIGNAL(onFinished(BloodPressureRes)), this,
+  connect(&blood_pressure_widget, SIGNAL(onFinished(BloodPressureRes)), this,
           SLOT(OnBPFinished(BloodPressureRes)));
 }
 
 void demo::OnBPFinished(BloodPressureRes res) {
-  delete blood_pressure_widget;
+  blood_pressure_widget.hide();
   bp_res = res;
 
   // cunpan
   // QtConcurrent::run(&demo::saveFile, );
 
-  ecg_widget = new ECGWidget;
-  ecg_widget->setSerialPort(serial);
-  ecg_widget->show();
-  connect(ecg_widget, SIGNAL(onFinished(ECGRes)), this,
+  // ecg_widget = new ECGWidget;
+  ecg_widget.setSerialPort(serial);
+  ecg_widget.show();
+  connect(&ecg_widget, SIGNAL(onFinished(ECGRes)), this,
           SLOT(OnECGFinished(ECGRes)));
 }
 
 void demo::OnECGFinished(ECGRes res) {
-  delete ecg_widget;
+  // delete ecg_widget;
+  ecg_widget.hide();
   ecg_res = res;
 }
 

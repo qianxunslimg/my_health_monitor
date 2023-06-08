@@ -20,10 +20,10 @@ private:
   BloodPressureRes bp_res;
   ECGRes ecg_res;
 
-  BloodPressureWidget *blood_pressure_widget;
-  ECGWidget *ecg_widget;
+  BloodPressureWidget blood_pressure_widget;
+  ECGWidget ecg_widget;
 
-  QWidget *res_widget;
+  QWidget res_widget;
   QSerialPort *serial; //串口
 
   void saveFile(QString filename, int type);
